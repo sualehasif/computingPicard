@@ -43,7 +43,7 @@ def findLpolys(data_path, C, lowerlimit, limit):
                 
                 #The coefficients for C are in the form [1, x, y, x^2, x*y, y^2, x^3, x^2*y, x*y^2]
                 
-                C = [ZZ(list_coef[0]), ZZ(list_coef[1]), 0, ZZ(list_coef[2]), 0, 1, 0, 0]
+                C = [ZZ(list_coef[0]), ZZ(list_coef[1]), 0, ZZ(list_coef[2]), 0, 0, 0, 0]
             else:
                 i += 1
                 if(i>1 and i<=limit):
