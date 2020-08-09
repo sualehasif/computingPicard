@@ -150,13 +150,13 @@ def liftLpoly(coeffs, p, C):
                 
             N_1D = multbyN(Jac[0]-1,D,Dpows)
 
-            if N_1D != 0:
+            if N_1D != curve.zero_divisor():
                 jacvals.remove(Jac)
             
             else:
                 D2 = multbyN(3*(p+1)*p, D, Dpows)
                 
-                if(N_1D + D2 != 0):
+                if(N_1D + D2 != curve.zero_divisor()):
                     jacvals.remove(jacvals[1])
 
         return jacvals[0][1]
