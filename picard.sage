@@ -98,7 +98,7 @@ def liftLpoly(coeffs, p, C):
         A1 = -(a_p+a_pbar)
         A2 = (a_p*a_pbar)+(b_p+b_pbar)
         A3 = -(c_p+c_pbar)-(a_p*b_pbar + a_pbar*b_p)
-        return [1,A1, A2, A3, p*A1, p^2*A2, p^3*A3]
+        return [1,A1, A2, A3, p*A2, p^2*A1, p^3]
 
     elif (p%3==2 and p>= 877):
         
