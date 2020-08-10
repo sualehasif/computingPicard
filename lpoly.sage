@@ -11,6 +11,16 @@ load("picard.sage")
 
 data_path = cwd + "/data/hwlpolys_1.txt"
 
+#We make a finite list because these are the only 2 mod 3 Fermat primes < 2^2048.
+#Computing the input to the algorithm past this point before the heat death of the universe would be quite hard
+    
+FermatPrimes = [5,17,257,65537]
+            
+#For arithmetic in Q(zeta_3).
+    
+K.<z>=NumberField(x^2+3)
+zeta = 1/2 * (-1+z)
+
 
 def findLpolys(data_path, C, lowerlimit, limit):
     #Reading file for L polys modulo p
@@ -19,8 +29,8 @@ def findLpolys(data_path, C, lowerlimit, limit):
     cm_list = []
     limit = prime_pi(limit)-2 #convert into line numbers.
 
-#     import urllib2  # the lib that handles the url stuff
-#     file_handle = urllib2.urlopen(path)
+    #import urllib2  # the lib that handles the url stuff
+    #file_handle = urllib2.urlopen(path)
 
     with open(data_path, 'r') as file_handle:
 
@@ -58,16 +68,6 @@ def findLpolys(data_path, C, lowerlimit, limit):
     
     print "starting"
     T1 = time.time()
-
-    #We make a finite list because these are the only 2 mod 3 Fermat primes < 2^2048.
-    #Computing the input to the algorithm past this point before the heat death of the universe would be quite hard
-    
-    FermatPrimes = [5,17,257,65537]
-            
-    #For arithmetic in Q(zeta_3).
-    
-    K.<z>=NumberField(x^2+3)
-    zeta = 1/2 * (-1+z)
     
     for pcoeffs in polyL:
         p = pcoeffs[0]
