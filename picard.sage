@@ -99,21 +99,28 @@ def liftLpoly(coeffs, p, C):
         A2 = (a_p*a_pbar)+(b_p+b_pbar)
         A3 = -(c_p+c_pbar)-(a_p*b_pbar + a_pbar*b_p)
         return [1,A1, A2, A3, p*A1, p^2*A2, p^3*A3]
+
     elif (p%3==2 and p>= 877):
         
-        
+        #Start by computing coefficients A_1, A_2, A_3 modulo p for the L-polynomial.
+
         A_1 = 0
         A_3 = 0
-        #A_1,A_3 are now correct
+
+        #A_1,A_3 are now correct. We read off A_2 from the Cartier-Manin matrix.
         
-        #L_p(t) = (pt^2+1)(p^2 t^4+(a/2)t^2-pt^2+1). So A_1=0, A_3=0. A_2=a/2.
+        #L_p(t) = (pt^2+1)(p^2 t^4+At^2-pt^2+1). So A_1=0, A_3=0. A_2 = A (mod p).
         
         k = GF(p)
         A_2modp = ZZ(k(-CartierManin[2][0]*CartierManin[0][2]-CartierManin[2][1]*CartierManin[1][2]))
         
+        #List to store candidate values for the order of the Jacobian.
+        
         jacvals=[]
         
         curve = C34Curve(k, C)
+
+        #We construct this polynomial to check irreducibility and use Lemma 3.9.
         
         PolyRing.<t> = PolynomialRing(k)
         
@@ -123,19 +130,26 @@ def liftLpoly(coeffs, p, C):
         
         if((f).is_irreducible()): mod3res = 1
         
+        #We have now computed the residue of the central coefficient of the quartic factor modulo 3.
+        #Now, search for possible candidates within the bounds of Lemma 3.8.
+        #The bounds say A_2 is between -p and 3p, as the central coefficient has |A|<=2p.
+
         for i in range(-2,3):
             A_2 = A_2modp + i*p
             if(A_2%3==mod3res):
                 JC = 1+A_2+A_2*p+p^3
                 jacvals.append([JC, [1,0,A_2,0,p*A_2,0,p^3]])
+
+        
+        #The following while loop runs Algorithm 4.2 until one candidate is left. 
+        #We check for the cases of Theorem 3.12 to ensure the expected runtime holds.
+        #numruns keeps tract of the number of random divisors, so we can implement the Monte-Carlo algorithm for the inert case.
                     
-        l = len(bin(p+1))*3+1
         numruns = 0
         
         while(len(jacvals)>1):
             
             D = curve.random_divisor()
-            Dpows = Dpowers(l,D,C)
             numruns+=1
             
             #Use Monte-Carlo algorithm with M=10.
@@ -148,15 +162,17 @@ def liftLpoly(coeffs, p, C):
             
             Jac = jacvals[0]
                 
-            N_1D = multbyN(Jac[0]-1,D,Dpows)
+            N_1D = Jac[0]*D
 
             if N_1D != curve.zero_divisor():
                 jacvals.remove(Jac)
             
             else:
-                D2 = multbyN(3*(p+1)*p, D, Dpows)
+                #Compute D2 so that we use less additions.
+                D2 = (3*(p+1)*p)*D
                 
                 if(N_1D + D2 != curve.zero_divisor()):
                     jacvals.remove(jacvals[1])
 
+        #Return the only candidate L-polynomial left.
         return jacvals[0][1]

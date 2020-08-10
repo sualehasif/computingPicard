@@ -58,11 +58,21 @@ def findLpolys(data_path, C, lowerlimit, limit):
     
     print "starting"
     T1 = time.time()
+
+    #We make a finite list because these are the only 2 mod 3 Fermat primes < 2^2048.
+    #Computing the input to the algorithm past this point before the heat death of the universe would be quite hard
+    
+    FermatPrimes = [5,17,257,65537]
+            
+    #For arithmetic in Q(zeta_3).
+    
+    K.<z>=NumberField(x^2+3)
+    zeta = 1/2 * (-1+z)
     
     for pcoeffs in polyL:
         p = pcoeffs[0]
         coeffs = pcoeffs[1:]
-        if p >= lowerlimit and p%3==2:
+        if p >= lowerlimit:
             answer=[coeffs,p,liftLpoly(coeffs, p, C)]
             ret.append(answer)
     T2 = time.time()

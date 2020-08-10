@@ -1,5 +1,5 @@
 
-#gcds in Z[zeta_3] (as it turns out, SAGE's method is faster. Maybe this can be optimized)
+#gcds in Z[zeta_3]
 CC=ComplexField(30)
 
 #Set up constants here, so that they are not recomputed.
@@ -37,37 +37,3 @@ def Euclidean_GCD(e1,e2):
     else:
         remainder = find_rem(e1,e2)
         return Euclidean_GCD(e2, remainder)
-
-def Dpowers(l,D):
-    Dpows = [D]
-    
-    for i in range(l-1):
-        Dtemp = Dpows[len(Dpows)-1]
-        D = 2*D
-        Dpows.append(D)
-    #Dpows now has all needed powers of 2^k D.
-    return Dpows
-
-def multbyN(N,D,Dpows):
-    #f0 = C[0]
-    #f1 = C[1]
-    #f2 = C[2]
-    #h0 = C[3]
-    #h1 = C[4]
-    #h2 = C[5]
-    #h3 = C[6]
-    #Fast conversion to binary.
-    binaryN = bin(N)[2:]
-    #Store log_2 N
-    l = len(binaryN)
-    #Store powers.
-    Dtemp = []
-    
-    for i in range(l):
-        D = Dpows[l-1-i]
-        if(binaryN[i]=='1'):
-            if(Dtemp == []): Dtemp = D
-            else: Dtemp = D+Dtemp
-                
-    return Dtemp
-
