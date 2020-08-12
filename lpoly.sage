@@ -9,7 +9,7 @@ load("c34.sage")
 os.chdir(cwd)
 load("picard.sage")
 
-data_path = cwd + "/data/hwlpolys_1.txt"
+current_data_path = cwd + "/data/hwlpolys_1.txt"
 
 #We make a finite list because these are the only 2 mod 3 Fermat primes < 2^2048.
 #Computing the input to the algorithm past this point before the heat death of the universe would be quite hard
@@ -22,9 +22,16 @@ K.<z>=NumberField(x^2+3)
 zeta = 1/2 * (-1+z)
 
 
-def findLpolys(data_path, C, lowerlimit, limit):
-    #Reading file for L polys modulo p
-    #Things are stored as a list of lists of the form [p, 1, a1, a2, a3]
+def findLpolys(data_path, C, lower_limit, limit):
+    """
+    Computes the Lpolynomials for primes lowerlimit < p <= limit, given a file of cartier manin matrices at
+     data_path for the curve C.
+    :param data_path: the file path to the cartier manin matrices formatted as a 3*3 list
+    :param C: the curve specified C in the form [1, x, y, x^2, x*y, y^2, x^3, x^2*y, x*y^2]
+    :param lower_limit: the lower limit on where to start computing
+    :param limit: the upper limit on computing the primes
+    :return: a file with Lpolynomials for primes lowerlimit < p <= limit.
+    """
 
     cm_list = []
     limit = prime_pi(limit)-2 #convert into line numbers.
@@ -68,15 +75,15 @@ def findLpolys(data_path, C, lowerlimit, limit):
     
     print "starting"
     T1 = time.time()
-    
-    for pcoeffs in polyL:
-        p = pcoeffs[0]
-        coeffs = pcoeffs[1:]
-        if p >= lowerlimit:
-            answer=[coeffs,p,liftLpoly(coeffs, p, C)]
+
+    for cm_coeffs in cm_list:
+        p = cm_coeffs[0]
+        CartierManin = cm_coeffs[1]
+        if (p >= lower_limit):
+            answer = [CartierManin, p, liftLpoly(CartierManin, p, C)]
             ret.append(answer)
     T2 = time.time()
-    
-    print "done in "+str(T2-T1)+" seconds"
-    print "average time "+str((T2-T1)/len(ret))+" seconds"
+
+    print("done in " + str(T2 - T1) + " seconds")
+    print("average time " + str((T2 - T1) / len(ret)) + " seconds")
     return ret

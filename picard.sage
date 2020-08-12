@@ -1,7 +1,14 @@
 from math import sqrt
 load("helpers.sage")
 
-def liftLpoly(coeffs, p, C):
+def liftLpoly(CartierManin, p, C):
+    """
+    lifts a cartier manin matrix for the fixed prime p to the almost surely unique Lpolynomial.
+    :param CartierManin: formatted as a matrix [[*,*,*], [*,*,*], [*,*,*]]
+    :param p: the prime p
+    :param C: the curve specified C in the form [1, x, y, x^2, x*y, y^2, x^3, x^2*y, x*y^2]
+    :return: the lifted L polynomials Lp with its coefficients [1, x, x^2, x^3, x^4, x^5, x^6]
+    """
     if p<=151:
         return Lpoly(coeffs,p,C)
         #For small cases. Can probably be dramatically improved; was somewhat ignored for this project.
