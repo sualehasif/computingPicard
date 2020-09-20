@@ -1,2 +1,2 @@
 # computingPicard
-Computing Picard curves from Cartier-Manin matrices
+This repository has practical implementations in SAGE and PARI/GP which compute the L-polynomials of generic Picard curves in N(log(N)^(3+o(1))) time for primes p<=N. To use these implementations, you must input lists of Cartier-Manin matrices and Frobenius traces on y^2 = x^3 - 15x + 22. These can be calculated in N(log(N)^(3+o(1))) time as well using https://arxiv.org/abs/2004.10189. We provide some sample outputs of this algorithm to use.
