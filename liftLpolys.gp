@@ -1670,6 +1670,14 @@ lift1mod3(p,cartierManin,t)=
     return([A1,A2,A3,p]);
 }
 
+\\ To use this function: pre-compute Cartier-Manin matrices for C, and compute a list of Frobenius traces of some elliptic curve
+\\ E/Q with CM by Q(sqrt(-3)) and CM discriminant -12, such as y^2 = x^3 - 15x + 22. 
+\\ It is (currently) best to use the algorithms mentioned in the paper to do these computations.
+\\ The Cartier-Manin matrices are put in CMList in the format [p,array for CM matrix].
+\\ The Frobenius traces go in TrList, which is just a list of traces for E/Q at each prime. 
+\\ Make sure to have TrList[i] to be the trace for p=CMList[i][1].
+\\ We have provided sample files to use for CMList, TrList in the repository.
+
 liftLpolys(CMList,TrList,C)=
 {
     l = length(CMList);
