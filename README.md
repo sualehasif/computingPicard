@@ -1,2 +1,2 @@
 # computingPicard
-computing Picard curves from Cartier-Manin matrices
+Computing Picard curves from Cartier-Manin matrices
