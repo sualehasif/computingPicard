@@ -1587,6 +1587,9 @@ lift2mod3(p,cartierManin,C)=
 
         numruns+=1; 
         if(numruns > 10 && (p in FermatPrimes), print("Use O(p^1/4) algorithm instead."); candidates=0;); 
+
+        \\ Use a Monte-Carlo algorithm; this is more efficient in practice. This is correct with probability >=1-2^-10.
+
         if(numruns > 10 && jacvals[2][1]==(p+1)^3, jacvals[1]=0; candidates-=1;);
 
         Jac = jacvals[1]; 
@@ -1605,11 +1608,14 @@ lift2mod3(p,cartierManin,C)=
     return(jacvals);
 }
 
-lift1mod3(p,cartierManin)=
+lift1mod3(p,cartierManin,t)=
 {
     cartierManin = matrix(3,3,a,b,cartierManin[a][b]);
-    sqrt_3 = sqrt(Mod(-3,p));
+    
+    v = sqrtint((4*p-t^2)/12);
+    sqrt_3 = Mod(t/(2*v),p);
     zeta3 = (Mod(-1,p)+ sqrt_3)/(Mod(2,p));
+
     zeta3bar = zeta3^2;
 
     M = [Mod(1,p), zeta3; Mod(1,p), zeta3bar];
@@ -1664,13 +1670,13 @@ lift1mod3(p,cartierManin)=
     return([A1,A2,A3,p]);
 }
 
-liftLpolys(CMList,C)=
+liftLpolys(CMList,TrList,C)=
 {
     l = length(CMList);
     for(i=30,l,
         p = CMList[i][1];
         CM = CMList[i][2];
-        if(Mod(p,3)==1, print(lift1mod3(p,CM)););
+        if(Mod(p,3)==1, t = TrList[i]; print(lift1mod3(p,CM,t)););
         if(Mod(p,3)==2, print(lift2mod3(p,CM,C)););
     )
 }
