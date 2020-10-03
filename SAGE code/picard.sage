@@ -163,13 +163,35 @@ def liftLpoly(CartierManin, Tr, p, C):
             D = curve.random_divisor()
             numruns+=1
             
-            #Use Monte-Carlo algorithm with M=10.
+            #Do some trial runs because in almost all cases where p is a Fermat prime or a candidate is (p+1)^3
+            #we still expect to be able to use DistinguishCandidates to tell them apart.
             
-            if(numruns > 10 and (p in FermatPrimes)): 
+            if(numruns >= 5 and (p in FermatPrimes)): 
                 return "Use O(p^1/4) algorithm instead."
             
-            if(numruns > 10 and jacvals[1][0]==(p+1)^3):
-                jacvals.remove(jacvals[0])
+            if(numruns >= 5 and jacvals[1][0]==(p+1)^3):
+                
+                #We are likely in the exceptional case where the group exponent may divide both candidates.
+                
+                if(numrums==5):
+                    N = p+1
+                    E = 0
+                    while(N%3==0): 
+                        N=int(N/3)
+                        E+=1
+
+                    bound = E+1
+
+                    #Get 3-free part + exponent of 3-sylow for the candidate with Jacobian order (p+1)^3
+                    E = 3*E
+                    N = N^3
+
+                #If #Jac = (p+1)^3, then with O(1) attempts we will prove the 3-sylow is large enough
+                #to eliminate the other candidate (whose 3-sylow is of order 3^(bound))
+                
+                if(threesylowislarge(N,E,C,bound)): return jacvals[1][1]
+                
+                #If this method cannot find a large enough 3-sylow, it is the other candidate and the rest of the loop will finish.
             
             Jac = jacvals[0]
                 
