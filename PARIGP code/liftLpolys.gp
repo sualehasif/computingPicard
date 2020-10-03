@@ -1589,6 +1589,8 @@ lift2mod3(p,cartierManin,C)=
         if(numruns > 10 && (p in FermatPrimes), print("Use O(p^1/4) algorithm instead."); candidates=0;); 
 
         \\ Use a Monte-Carlo algorithm; this is more efficient in practice. This is correct with probability >=1-2^-10.
+        \\ The linear span method is tricky with this implementation of Jacobian arithmetic because we get nontypical divisors.
+        \\ If you need absolute certainty for a particular prime for which this bad case occurs, use the Sage implementation on that particular prime.
 
         if(numruns > 10 && jacvals[2][1]==(p+1)^3, jacvals[1]=0; candidates-=1;);
 
