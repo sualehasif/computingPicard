@@ -1591,8 +1591,9 @@ lift2mod3(p,cartierManin,C)=
         \\ Use a Monte-Carlo algorithm; this is more efficient in practice. This is correct with probability >=1-2^-10.
         \\ The linear span method is tricky with this implementation of Jacobian arithmetic because we get nontypical divisors.
         \\ If you need absolute certainty for a particular prime for which this bad case occurs, use the Sage implementation on that particular prime.
+        \\ Hueristically, due to the Sato-Tate conjecture we should expect these cases to be extremely rare.
 
-        if(numruns > 10 && jacvals[2][1]==(p+1)^3, jacvals[1]=0; candidates-=1;);
+        if(numruns > 10 && jacvals[2][1]==(p+1)^3, jacvals[1]=0; print(p); print("Correct with probability >=1-2^-10"); candidates-=1;);
 
         Jac = jacvals[1]; 
         N_1D = multbyN(Jac[1]-1,D,Dpows,C);
