@@ -29,16 +29,16 @@ lift2mod3(p,cartierManin,C)=
 
     binp = binary(p);
     
-    psi_f_bar = 1;
+    xp_bar = 1;
     res = Mod(x,psi_f);
 
     \\ Use repeated squaring to efficiently compute x^p mod psi_f.
     
-    for(i=1, length(binp), if(binp[length(binp)+1-i]==1, psi_f_bar *= res;); res = res*res;);
+    for(i=1, length(binp), if(binp[length(binp)+1-i]==1, xp_bar *= res;); res = res*res;);
 
     \\ This computation is now O(1) because we have reduced the degree. This encodes whether psi_f has roots or not.
 
-    psiGCDdeg = poldegree(gcd(lift(psi_f_bar)-x,psi_f));
+    psiGCDdeg = poldegree(gcd(lift(xp_bar)-x,psi_f));
 
     \\The parity of A2.
 
