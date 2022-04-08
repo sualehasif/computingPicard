@@ -1,6 +1,9 @@
 lift2mod3(p,cartierManin,C)=
 {
     cartierManin = matrix(3,3,a,b,cartierManin[a][b]);
+
+    \\ The following formula works because all other entries besides those used below are 0 in the 3x3 Cartier-Manin matrix.
+
     A2modp = lift(Mod(-cartierManin[3,1]*cartierManin[1,3]-cartierManin[3,2]*cartierManin[2,3],p));
 
     f = x^4 + Mod(C[3],p)*x^2 + Mod(C[2],p)*x + Mod(C[1],p);
@@ -31,11 +34,11 @@ lift2mod3(p,cartierManin,C)=
 
     \\ Use repeated squaring to efficiently compute x^p mod psi_f.
     
-    for(i=1, length(binp), if(binp[length(binp)+1-i]==1, psi_f_barfast *= res;); res = res*res;);
+    for(i=1, length(binp), if(binp[length(binp)+1-i]==1, psi_f_bar *= res;); res = res*res;);
 
     \\ This computation is now O(1) because we have reduced the degree. This encodes whether psi_f has roots or not.
 
-    psiGCDdeg = poldegree(gcd(psi_f_bar-x,psi_f));
+    psiGCDdeg = poldegree(gcd(lift(psi_f_bar)-x,psi_f));
 
     \\The parity of A2.
 
