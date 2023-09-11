@@ -134,11 +134,14 @@ lift1mod3(p,cartierManin,t,useTr)=
 }
 
 \\ To use this function: pre-compute Cartier-Manin matrices for C, and compute a list of Frobenius traces of some elliptic curve
-\\ E/Q with CM by Q(sqrt(-3)) and CM discriminant -12, such as y^2 = x^3 - 15x + 22. 
-\\ If you want, you can also remove TrList and compute zeta_3 directly from built-in PARI/GP functions via liftLpolysAlt - the time is about the same.
+\\ E/Q with CM by Q(sqrt(-3)) and CM discriminant -12, such as y^2 = x^3 - 15x + 22.
+\\ The Frobenius traces begin at the prime 2; depending on primes skipped in CM matrices, you'll want to shift the index.
+\\ You can remove TrList and compute zeta_3 directly from built-in PARI/GP functions via liftLpolysAlt if you don't want to deal with this, the time is not too much slower.
 \\ The Cartier-Manin matrices are put in CMList in the format [p,array for CM matrix].
 \\ We have provided sample files to use for CMList, TrList in the repository.
 \\ To use these with this code, read in CMList via readstr("data_file") - it is processed correctly in the function.
+\\ TrList can be directly inputted as a list.
+\\ The list C = [C[1],C[2],C[3]] corresponds to the Picard curve y^3 = x^4+C[3]x^2+C[2]x+C[1].
 
 liftLpolys(CMList,TrList,C,i)=
 {
